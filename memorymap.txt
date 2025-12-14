@@ -1,16 +1,20 @@
 
-0200 - Interface buffers to many of the DRAWING2 calls
-0400 - TEXT screen
-0800 - Applesoft: LOGIC.SIM2
 
-HIMEM: $3400
-3A00 - DIRROUTS is ~ $0600 bytes long...
-4000 - HGR2 screen
-6000 - Simulation data (e.g. EXAMPLE or BLANKDATA) $2008 bytes
-8000 - Simulation waveform data (8bytes + 8bytes for LOGIC2)
-8100 - DRAWING2 - lots of text and block drawing functions (through 88FF)
-8D00 - LOGIC2 - Simulation code (through 8FFF)
-9000 - DRAW.TBLS - Icons
-9200 - FONT bitmaps 512 bytes (64 characters)
-9400 - HIGHS - table of HGR scanline Y starts HI
-9500 - LOWS - table of HGR scanline Y starts LO
+Window pack sits in both main and aux memory:
+
+main memory:
+
+300 - Assembly entry point to winpack - WHEAD.S
+
+9900 - AMPER.PRODOS.S - parse Applesoft and dispatch via 300
+
+aux memory:
+
+1000 - WINDOWS2.S
+
+Loader program:
+
+3F00 - copy data from 4000-46FF(main) to 1000-16FF(aux)
+3F80 - WHEAD.S - execution dispatch to 1000(aux) and screen I/O
+     - Placed at 0300(main)
+4000 - image for 1000(aux) - WINDOWS.S 

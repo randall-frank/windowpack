@@ -5,9 +5,9 @@
  36 PRINT "Written by: Randy Frank"
  40 PRINT "Requires extended 80 column card": PRINT "and 65C02 microprocessor."
  50  VTAB 12: POKE 1403,20: PRINT "Booting the Window Pack..."
- 60  PRINT CHR$(4);"BRUN DISCONNECT.RAM"
- 70  PRINT CHR$(4);"BRUN WPACK"
- 80  PRINT CHR$(4);"BRUN AMPER.PRODOS,A$4000"
+ 60  PRINT CHR$(4);"BRUN DISCONNECT.RAM" : REM Disable /RAM drive
+ 70  PRINT CHR$(4);"BRUN WPACK" : REM Load wpack code into aux mem
+ 80  PRINT CHR$(4);"BRUN AMPER.PRODOS,A$4000" : REM install '&' handler
  90  & I
  100  & O,3,3,60,15,1
  110  VTAB 4: POKE 1403,0: INVERSE : PRINT "Window #1";: NORMAL : & T,0,0

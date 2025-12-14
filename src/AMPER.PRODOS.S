@@ -2,11 +2,14 @@
          DSK   ../bin/AMPER.PRODOS#069900
          TYP   $06  ; /BIN file
 
-ST       LDA   #1
-         JSR   $BEF5
+                        
+GETBUFR  =     $BEF5      ; Allocate a basic.system buffer
+
+ST       LDA   #1         ; 1 page
+         JSR   GETBUFR
          BCC   III
          RTS
-III      CMP   #$99
+III      CMP   #$99       
          BNE   III-1
          LDY   #0
 III2     LDA   $4000,Y
@@ -30,7 +33,7 @@ III2     LDA   $4000,Y
          EOR   #$A5
          STA   $3F4
          RTS
-START    JSR   $B7
+START    JSR   $B7        ; Parse the & command
          PHA
          JSR   $B1
          PLA
@@ -39,7 +42,7 @@ L1       CMP   TBL,Y
          BEQ   L2
          INY
          BNE   L1
-         JMP   $DEBE
+         JMP   $DEBE      ; Comma check
 L2       TYA
          TAX
          STX   TEMP2
@@ -58,9 +61,9 @@ L3       LDY   TEMP
          CMP   #$80
          BEQ   L6
          PHA
-         JSR   $DEBE
-         JSR   $DD67
-         JSR   $E752
+         JSR   $DEBE      ; Comma check
+         JSR   $DD67      ; Get a value
+         JSR   $E752      ; convert to 16bit integer $51,$52
          PLA
          TAX
          LDA   $50
@@ -76,10 +79,10 @@ TBL      ASC   'IOCPMLET'
 TBL2     HEX   800001020304800480048000010480008080000180
 TEMP     DFB   0
 TEMP2    DFB   0
-RESET    JSR   $C300
+RESET    JSR   $C300      ; init video card
          LDA   #0
          STA   5
-         JSR   $300
+         JSR   $300       ; dispatch though RAW API interface
          LDA   #0
          STA   0
          STA   1
