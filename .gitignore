@@ -1,8 +1,10 @@
 merlin*/
 ciderpres*/
-bin/LOGIC2*
-bin/DRAWING2*
-bin/DIRROUTS*
+bin/AMPER.PRODOS*
+bin/LOADER*
+bin/WHEAD*
+bin/WINDOWS*
+bin/WPACK#*
 bin/VERSION*
 bin/_*
 /*.2mg
@@ -10,3 +12,4 @@ bin/_*
 .vscode/
 src/VERSION.S
 older/
+/file.svg

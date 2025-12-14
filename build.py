@@ -36,7 +36,7 @@ with open(os.path.join("src","VERSION.S"), "w") as out:
 with open(os.path.join("bin", "VERSION#040000"), "w") as out:
     out.write(version)
 
-files = ["AMPER.PRODOS.S"]
+files = ["AMPER.PRODOS.S", "WINDOWS.S", "LOADER.S", "WHEAD.S"]
 
 log.info("Assembling 6502 source code...")
 
@@ -54,6 +54,32 @@ for name in files:
         log.error(f"assembling: {name}: {result.stdout}")
         sys.exit(1)
 os.chdir(orig_dir)
+
+bins = {
+    "bin/LOADER#063f00":  0x3f00, 
+    "bin/WHEAD#060300":  0x3f80,    # reloc=0x300(main+aux)
+    "bin/WINDOWS#061000": 0x4000,    # reloc=0x1000(aux)
+}
+
+log.info("Building WPACK(BIN#06) file...")
+
+# Build 'WPACK,TBIN' from bins
+with open(os.path.join('bin', 'WPACK_orig#063f00'), 'rb') as fp:
+    data = bytearray(fp.read())
+
+for name, addr in bins.items():
+    log.info(f"Loading {name} at {addr:04X}")
+    with open(name, "rb") as f:
+        local = bytearray(f.read())
+    offset = addr - 0x3f00
+    length = len(local)
+    data[offset:offset+length] = local
+
+outname = os.path.join('bin', 'WPACK#063f00')
+with open(outname, "wb") as fp:
+    fp.write(data)
+log.info(f"Wrote system file: {outname}")
+
 
 log.info("Building .po disk image...")
 # Create a release .po image
@@ -94,6 +120,8 @@ for name in os.listdir("basic"):
         log.info(f"Imported: basic/{name} as {root}")
 
 for name in os.listdir("bin"):
+    if "_orig" in name:
+        continue
     if not name.startswith("_"):
         subdir = ""
         cmd = [ciderpresscli, "add", "--strip-paths", rel_filename+subdir, f"bin/{name}"]

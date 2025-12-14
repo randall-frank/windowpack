@@ -1,5 +1,5 @@
          ORG   $300
-         DSK   ../bin/WHEAD.BIN#060300
+         DSK   ../bin/WHEAD#060300
          TYP   $06  ; /BIN file
 
          LDA   5

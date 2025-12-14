@@ -4,17 +4,23 @@ Window pack sits in both main and aux memory:
 
 main memory:
 
-300 - Assembly entry point to winpack - WHEAD.S
+0300 - Assembly entry point to winpack - WHEAD.S
 
 9900 - AMPER.PRODOS.S - parse Applesoft and dispatch via 300
 
 aux memory:
+0300 - Assembly entry point to winpack - WHEAD.S
+     - Duplicate of the code in main memory
 
-1000 - WINDOWS2.S
+1000 - WINDOWS.S
 
-Loader program:
+Loader program: WPACK,TBIN,A$3F00:
 
-3F00 - copy data from 4000-46FF(main) to 1000-16FF(aux)
+3F00 - LOADER.S
+     - copy data from 4000-46FF(main) to 1000-16FF(aux)
+     - copy data from 3F80-3FFF(main) to 0300-037F(main)
+
 3F80 - WHEAD.S - execution dispatch to 1000(aux) and screen I/O
      - Placed at 0300(main)
+
 4000 - image for 1000(aux) - WINDOWS.S 

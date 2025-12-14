@@ -60,7 +60,7 @@
  1035  PRINT "is referenced by a one byte 'name' and may be manipulated  in ";
  1040  PRINT "various ways.  They may move and may overlap each other without ";
  1050  PRINT "loss ofthe data that was displayed in the window.  The system ";
- 1055  PRINT "is simple and very easy to incorperate into your own programs.  ";
+ 1055  PRINT "is simple and very easy to incorporate into your own programs.  ";
  1060  PRINT "It uses about 300 bytes of   main memory.  The program uses the ";
  1065  PRINT "alternate 64k bank on the eighty columncard for program ";
  1070  PRINT "and data storage.  It is all neatly tucked away so it    won't get in the way."
@@ -82,7 +82,7 @@
  1320  PRINT : PRINT "  This command will open a text window with upper right hand corner ";
  1330  PRINT "at    x1,y1 (0-78,0-22) of width dx and height dy.  It also names the ";
  1340  PRINT "window id for future references.  The window will be on top of all ";
- 1350  PRINT "others and outputwill be diercted to it.  Care must be taken to insure ";
+ 1350  PRINT "others and outputwill be directed to it.  Care must be taken to insure ";
  1360  PRINT "that the window willlie completely on the screen."
  1370  PRINT : PRINT "  This command is used to open a window so that text output may be ";
  1380  PRINT "sent tothe user.  A call to open must occur after a call to initialize ";
@@ -136,7 +136,7 @@
  2420  PRINT : PRINT "  This routine operates the pull down menu selection routine.  ";
  2430  PRINT "Calling    this routine allows the user to select an option from the ";
  2440  PRINT "current pull    down menu set.  The user may abort by pressing the ESC ";
- 2450  PRINT "key. Apon returningthe horizontal value of the choice will be in ";
+ 2450  PRINT "key. Upon returningthe horizontal value of the choice will be in ";
  2460  PRINT "memory location 0 and rangesfrom 0-7.  The vertical value is in ";
  2470  PRINT "location 1 and can range from 1-15.   If no selection was made then ";
  2480  PRINT "both memory locations will hold the value   255."
@@ -267,15 +267,15 @@
  7150  & P,128: & T,0,9: PRINT "Lets look at them one by one..."
  7155  FOR X = 5 TO 1 STEP  - 1: & P,X: NEXT X
  7160  FOR X = 1 TO 5
- 7170  & P,X: FOR QQ = 1 TO 1500: NEXT QQ
- 7180  HOME : PRINT C1$(X): PRINT C2$(X): FOR QQ = 1 TO 3000: NEXT QQ
+ 7170  & P,X: FOR QQ = 1 TO 1000: NEXT QQ
+ 7180  HOME : PRINT C1$(X): PRINT C2$(X): FOR QQ = 1 TO 1000: NEXT QQ
  7190  NEXT X
  7200  & P,128: & T,0,11: PRINT "Even if they are all obscured we can still pop the cards up..."
  7210  GOSUB 10000
  7220  & M,2,2,128: GOSUB 10000
  7300  FOR X = 1 TO 5
  7340  & M,X * 11 + 5,5,X
- 7345  FOR QQ = 1 TO 2500: NEXT QQ
+ 7345  FOR QQ = 1 TO 1000: NEXT QQ
  7350  NEXT X
  7360  GOSUB 10000
  7400  & P,128: & T,0,14: PRINT "Popping is simple even if it doesn't yield the royal straight flush.";
@@ -313,7 +313,7 @@
  8270  FOR X = 2 TO 7: & C,W(X): GOSUB 8500: NEXT X
  8300  & P,1: & T,0,6: PRINT "Now wasn't that easy?";: GOSUB 10000: & C,1
  8499  GOTO 8999
- 8500  FOR QQ = 1 TO 1500: NEXT QQ: RETURN 
+ 8500  FOR QQ = 1 TO 1000: NEXT QQ: RETURN 
  8999  RETURN 
  9000  REM  SAMPLE
  9010  & O,1,2,28,17,1

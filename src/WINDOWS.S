@@ -1,5 +1,5 @@
          ORG   $1000
-         DSK   ../bin/WINDOWS.BIN#061000
+         DSK   ../bin/WINDOWS#061000
          TYP   $06  ; /BIN file
 
 XIN      =     0
