@@ -1,0 +1,347 @@
+ 90  LOMEM: 8 * 4096
+ 100  REM  START BY RESETTING SCREEN
+ 110  GOSUB 3000
+ 120  PRINT  CHR$ (4)"BLOAD DEMO.PD,A$7000"
+ 130  PRINT  CHR$ (4)"BLOAD DEMO.PD2,A$7800"
+ 140  & I
+ 150  & L,7 * 4096
+ 160 KB = 12 * 4096:KS = KB + 16
+ 165  FOR X = 1 TO 10: READ C$(X): NEXT 
+ 166  DATA   "Description","","Initialize","Open","Close","Move","Pop"
+ 167  DATA  "Menu line","Pull downs","Relative tabbing"
+ 168  FOR X = 1 TO 5: READ C1$(X): NEXT X: FOR X = 1 TO 5: READ C2$(X): NEXT X
+ 169  DATA "Ace of  ","King of ","Queen of","Jack of ","Ten of   ","Hearts","Hearts","Hearts","Hearts","Clubs"
+ 200  & O,20,6,40,12,1
+ 210  HOME 
+ 220  & T,3,1: PRINT "Welcome to the world of windows."
+ 230  PRINT : PRINT "  For demonstrations and instructions ";
+ 240  PRINT "use the pull down menus.  Press ESC ";
+ 250  PRINT "toenter the menus.  The arrow ";
+ 260  PRINT "keys will allow you to select an option.  ";
+ 270  PRINT "Press RETURN to go to that option or ";
+ 280  PRINT "ESC to abort your selection.";
+ 281 SS =  FRE (0)
+ 290  IF  PEEK (KB) <  > 27 + 128 THEN 290
+ 300  POKE KS,0: & E
+ 310 X =  PEEK (0):Y =  PEEK (1)
+ 320  IF X <  > 255 THEN 400
+ 330  PRINT : PRINT "   You have not made a selection.";
+ 340  GOSUB 10000
+ 350  & P,1: GOTO 210
+ 400  & C,1
+ 410  IF X <  > 2 THEN 500
+ 420  IF Y > 1 THEN 450
+ 430  & O,1,1,78,22,1
+ 440  VTAB 2: POKE 1403,0: INVERSE : PRINT "Window #1";: NORMAL 
+ 445  & T,0,0: PRINT "Bye!": END 
+ 450 S = 3 + Y
+ 455  & O,25,5,30,4,1
+ 456  & T,0,0
+ 460  PRINT "Booting slot #";S
+ 470  GOSUB 10000
+ 475  & P,1: & T,0,0
+ 476  PRINT 
+ 480  PRINT  CHR$ (4)"PR#";S
+ 490  END 
+ 500  IF X = 1 THEN 5000: REM  DEMOS SELECTION
+ 505  & O,2,2,76,20,1
+ 506  VTAB 3: POKE 1403,0: INVERSE : PRINT C$(Y);: NORMAL 
+ 507  HOME 
+ 510  ON Y GOSUB 1000,1000,1200,1300,1600,1800,2000,2200,2400,2600
+ 520  & C,1
+ 530  GOTO 200
+ 1000  REM  DESCRIPTION
+ 1010  PRINT "What is the Window Pack?"
+ 1011  PRINT 
+ 1015  PRINT "  Simply it is the power to create and manage a Mac-like ";
+ 1020  PRINT "environment on   an enhanced //e.  It will support up to eight ";
+ 1025  PRINT "pull down menus each up to  fifteen selections deep.  It can ";
+ 1030  PRINT "support up to eight windows open at once.Each window is ";
+ 1035  PRINT "is referenced by a one byte 'name' and may be manipulated  in ";
+ 1040  PRINT "various ways.  They may move and may overlap each other without ";
+ 1050  PRINT "loss ofthe data that was displayed in the window.  The system ";
+ 1055  PRINT "is simple and very easy to incorperate into your own programs.  ";
+ 1060  PRINT "It uses about 300 bytes of   main memory.  The program uses the ";
+ 1065  PRINT "alternate 64k bank on the eighty columncard for program ";
+ 1070  PRINT "and data storage.  It is all neatly tucked away so it    won't get in the way."
+ 1075  PRINT 
+ 1080  PRINT "To load the Window Pack BRUN the file WPACK and the BRUN the correct AMPER";
+ 1085  PRINT "file for DOS or ProDOS.  This will add a new set of commands to BASIC."
+ 1090  PRINT "Each command is explained in the Command pull down menu."
+ 1100  GOTO 10000
+ 1200  PRINT "INITIALIZE THE SCREEN"
+ 1210  PRINT "Syntax: &I "
+ 1220  PRINT : PRINT "  This command will clear the screen to an empty background ";
+ 1230  PRINT "and will clearthe pull down menus to white."
+ 1240  PRINT : PRINT "  This command also clears all windows from the screen and readies it for use by a program."
+ 1245  PRINT : PRINT "Note: all arguments to the ampersand commands may be any valid ";
+ 1246  PRINT "numeric    function."
+ 1250  GOTO 10000
+ 1300  PRINT "OPEN A WINDOW"
+ 1310  PRINT "Syntax: &O,x1,y1,dx,dy,id"
+ 1320  PRINT : PRINT "  This command will open a text window with upper right hand corner ";
+ 1330  PRINT "at    x1,y1 (0-78,0-22) of width dx and height dy.  It also names the ";
+ 1340  PRINT "window id for future references.  The window will be on top of all ";
+ 1350  PRINT "others and outputwill be diercted to it.  Care must be taken to insure ";
+ 1360  PRINT "that the window willlie completely on the screen."
+ 1370  PRINT : PRINT "  This command is used to open a window so that text output may be ";
+ 1380  PRINT "sent tothe user.  A call to open must occur after a call to initialize ";
+ 1390  PRINT "before anytext is printed."
+ 1395  GOTO 10000
+ 1600  PRINT "CLOSE A WINDOW"
+ 1610  PRINT "Syntax: &C,id"
+ 1620  PRINT : PRINT "  Closing a window is simple.  Call this routine with the id of the windowyou wish to close.  ";
+ 1630  PRINT "The window will first be popped to the surface, if it was obscured by ";
+ 1640  PRINT "another window, and then it will be removed from the      screen along ";
+ 1650  PRINT "with all the text in the window.  The background under the   window ";
+ 1660  PRINT "will be restored."
+ 1670  PRINT : PRINT "  Use this routine to get rid of a window that you no longer need ";
+ 1680  PRINT "for     displaying text.  This routine does not care where the window is or ";
+ 1690  PRINT "if it is obscured by another window, it will handle it."
+ 1799  GOTO 10000
+ 1800  PRINT "MOVE A WINDOW"
+ 1810  PRINT "Syntax: &M,x1,y1,id"
+ 1820  PRINT : PRINT "  This routine will pop a window to the surface, if needed, directing ";
+ 1830  PRINT "    output to the window called id.  It will then move the window so that ";
+ 1840  PRINT "the upper right hand corner is at the location specified by x1,y1.  ";
+ 1850  PRINT "All text  in the window at the time of moving will be preserved. ";
+ 1855  PRINT "Care must be taken to insure that the window will fit entirely on the screen after being     moved to its new location."
+ 1860  PRINT : PRINT "  Use this routine to create moving windows or to clean up displays ";
+ 1870  PRINT "on thefly.  It can be used to form more readable screens of data."
+ 1999  GOTO 10000
+ 2000  PRINT "POP A WINDOW FOR OUTPUT"
+ 2010  PRINT "Syntax: &P,id"
+ 2020  PRINT : PRINT "  This routine is called internally by many other routines.  It ";
+ 2030  PRINT "brings a  window to the forefront of the workspace and directs text ";
+ 2040  PRINT "output to the   window identified by id. "
+ 2050  PRINT : PRINT "  Use this routine to direct output to a certain window or to bring ";
+ 2060  PRINT "a     window and all the information in it to the top of the workspace ";
+ 2070  PRINT "for viewing."
+ 2199  GOTO 10000
+ 2200  PRINT "SET A PULL DOWN MENU LINE"
+ 2210  PRINT "Syntax:  &L,addr"
+ 2220  PRINT : PRINT "  This command is used to set up a pull down menu set.  The set ";
+ 2230  PRINT "must have been defined by the program MODS. The files created by ";
+ 2240  PRINT "MODS may be BLOADedanywhere not being used and then execute a call ";
+ 2250  PRINT "to this routine with addr pointing to the start of the MODS file.  ";
+ 2260  PRINT "After the call the 2k used by theMODS file may be reused as the &L ";
+ 2270  PRINT "copies the data into the alternate 64k  bank. "
+ 2275  PRINT 
+ 2280  PRINT "  This routine is called when you want to set up a new or start a ";
+ 2290  PRINT "pull    down menu set."
+ 2399  GOTO 10000
+ 2400  PRINT "OPERATE PULL DOWN MENUS"
+ 2410  PRINT "Syntax: &E"
+ 2411  PRINT "        Then: X=PEEK(0):Y=PEEK(1)"
+ 2420  PRINT : PRINT "  This routine operates the pull down menu selection routine.  ";
+ 2430  PRINT "Calling    this routine allows the user to select an option from the ";
+ 2440  PRINT "current pull    down menu set.  The user may abort by pressing the ESC ";
+ 2450  PRINT "key. Apon returningthe horizontal value of the choice will be in ";
+ 2460  PRINT "memory location 0 and rangesfrom 0-7.  The vertical value is in ";
+ 2470  PRINT "location 1 and can range from 1-15.   If no selection was made then ";
+ 2480  PRINT "both memory locations will hold the value   255."
+ 2490  PRINT : PRINT "  Use this command to get a menu selection from the pull down menus."
+ 2599  GOTO 10000
+ 2600  PRINT "RELATIVE HTAB,VTAB"
+ 2610  PRINT "Syntax: &T,x1,y1"
+ 2620  PRINT : PRINT "  As windows may move and be anywhere on the screen your tabbing, ";
+ 2630  PRINT "HTAB andVTAB, should be done with &T.  This command will move the ";
+ 2640  PRINT "print cursor to the position x1,y1 relative to the upper left hand ";
+ 2650  PRINT "of the text area of a  window.  The square just inside of the border ";
+ 2660  PRINT "of a window is designated   0,0."
+ 2670  PRINT : PRINT "  Use this command to format your output within a window since ";
+ 2680  PRINT "if the     window moves your routines will still work fine in the new ";
+ 2690  PRINT "location."
+ 2799  GOTO 10000
+ 3000 PRINT CHR$(4);"OPEN VERSION"
+ 3010 PRINT CHR$(4);"READ VERSION"
+ 3020 INPUT VN$
+ 3030 PRINT CHR$(4);"CLOSE VERSION"
+ 3040 RETURN
+ 5000  REM  DEMOS
+ 5010  ON Y GOSUB 5100,6000,7000,8000,9000
+ 5020  GOTO 200
+ 5100  REM  MOVEMENT
+ 5110  & O,4,4,40,15,1
+ 5120  HOME : & T,0,0
+ 5130  PRINT "Movement of windows is quite easy withthe &M command.  ";
+ 5140  PRINT "Watch these windows  move around the screen...."
+ 5150  & O,1,1,8,3,2
+ 5155  HOME : PRINT "Hi...";
+ 5160  FOR QQ = 1 TO 10
+ 5170  FOR Y = 2 TO 18: & M,2,Y,2: NEXT Y
+ 5180  FOR X = 2 TO 60: & M,X,18,2: NEXT X
+ 5190  FOR Y = 18 TO 2 STEP  - 1: & M,60,Y,2: NEXT Y
+ 5200  FOR X = 60 TO 2 STEP  - 1: & M,X,2,2: NEXT X
+ 5210  NEXT QQ
+ 5220  & P,1: & T,0,4: PRINT "Now two..."
+ 5230  & O,1,1,8,3,3: HOME : PRINT "there";
+ 5235  FOR QQ = 1 TO 10
+ 5240 X = 5:Y = 2
+ 5250  & M,X,Y,2: & M,62 - X,Y,3
+ 5260 X = X + 1:Y = Y + 1
+ 5265  IF Y <  > 18 THEN 5250
+ 5266  & M,X,Y,2: & M,62 - X,Y,3
+ 5267 X = X - 1:Y = Y - 1
+ 5268  IF Y <  > 2 THEN 5266
+ 5270  NEXT QQ
+ 5280  & C,2: & C,3: & P,1: & T,0,6
+ 5290  PRINT "Even the biggest can move..."
+ 5295  GOSUB 10000
+ 5300  & M,1,1,1: & T,0,8: PRINT "Here, ";: GOSUB 10000
+ 5320  & M,20,5,1: & T,6,8: PRINT "to here, ";: GOSUB 10000
+ 5330  & M,10,8,1: & T,15,8: PRINT "to there...";: GOSUB 10000
+ 5335  & M,2,2,1
+ 5340  & T,0,10: PRINT "Motion is quite easy with &M."
+ 5350  GOSUB 10000
+ 5360  & C,1
+ 5999  RETURN 
+ 6000  REM  PULL
+ 6010  & L,7 * 4096 + 8 * 256
+ 6100  & E
+ 6101 X =  PEEK (0):Y =  PEEK (1)
+ 6105  IF X = 7 AND Y = 5 THEN 6999
+ 6110  IF X = 255 AND Y = 255 THEN 6999
+ 6120  IF X = 0 AND Y = 1 THEN 6500
+ 6130  IF X = 0 AND Y = 2 THEN 6600
+ 6140  IF X = 4 AND Y = 1 THEN 6700
+ 6150  IF X = 6 AND (Y = 1 OR Y = 2) THEN 6800
+ 6160  IF X = 6 AND (Y >  = 4 AND Y <  = 6) THEN 6900
+ 6200  & O,5,5,50,3,1
+ 6210  HOME : & T,0,0: PRINT "Sorry, that function is not implemented...";
+ 6220  GOSUB 10000
+ 6230  & C,1: GOTO 6100
+ 6500  & O,5,5,50,10,1
+ 6510  HOME : & T,0,0
+ 6520  PRINT "About Window Pack..."
+ 6530  PRINT : PRINT "  Amaze your friends with a Mac like ";
+ 6540  PRINT "workspace. Spice up your programs with ";
+ 6550  PRINT "pull down menus and pop up windows. "
+ 6555  PRINT 
+ 6560  PRINT "All yours at an amazing price!";
+ 6570  GOSUB 10000
+ 6571  HOME 
+ 6572  PRINT "Try the Filing catalog option, the About author option, ";
+ 6573  PRINT "the drive selection options and exit    through Exit... or by ESC."
+ 6575  GOSUB 10000
+ 6580  & C,1
+ 6590  GOTO 6100
+ 6600  & O,5,5,50,7,1
+ 6610  HOME : & T,0,0
+ 6620  PRINT "About..."
+ 6630  PRINT : PRINT "Window Pack v";VN$;" by Randy Frank"
+ 6640  PRINT "Copyright (C) 1986 Compute! Publications"
+ 6650  GOSUB 10000
+ 6660  & C,1
+ 6670  GOTO 6100
+ 6700  & O,1,1,45,23,1
+ 6710  VTAB 2: POKE 1403,0: INVERSE : PRINT "A Catalog...": NORMAL 
+ 6720  HOME : & T,0,0
+ 6730  PRINT  CHR$ (4)"CAT"
+ 6740  GOSUB 10000
+ 6750  & C,1
+ 6760  GOTO 6100
+ 6800  POKE 7 * 4096 + 14 * 256 + 7,11 * 16 + Y
+ 6810  & L,7 * 4096 + 8 * 256
+ 6820  GOTO 6100
+ 6900 Y = Y + 2: IF Y = 8 THEN Y = 3
+ 6905  POKE 7 * 4096 + 14 * 256 + 4,11 * 16 + Y
+ 6910  & L,7 * 4096 + 8 * 256
+ 6920  GOTO 6100
+ 6999  & L,7 * 4096: RETURN 
+ 7000  REM  POP
+ 7010  & O,40,2,39,19,128
+ 7020  HOME 
+ 7030  PRINT " The ability to obscure and unobscurea window at will ";
+ 7040  PRINT "is fundamental to a window environment. Window Pack takes";
+ 7050  PRINT "control through &P the pop command.  With it any window may ";
+ 7060  PRINT "be brought to the top to look at or work on."
+ 7070  GOSUB 10000
+ 7080  & T,0,6: PRINT "Lets deal some cards..."
+ 7090  FOR X = 1 TO 5: & O,X * 2 + 2,X * 2 + 2,10,11,X
+ 7100  INVERSE : VTAB X * 2 + 3: POKE 1403,0: PRINT "Card #";X;: NORMAL 
+ 7110  HOME : & T,0,0
+ 7120  PRINT "**********    ****    ****    ****    ****    ****    **********";
+ 7130  NEXT X
+ 7140  GOSUB 10000
+ 7150  & P,128: & T,0,9: PRINT "Lets look at them one by one..."
+ 7155  FOR X = 5 TO 1 STEP  - 1: & P,X: NEXT X
+ 7160  FOR X = 1 TO 5
+ 7170  & P,X: FOR QQ = 1 TO 1500: NEXT QQ
+ 7180  HOME : PRINT C1$(X): PRINT C2$(X): FOR QQ = 1 TO 3000: NEXT QQ
+ 7190  NEXT X
+ 7200  & P,128: & T,0,11: PRINT "Even if they are all obscured we can still pop the cards up..."
+ 7210  GOSUB 10000
+ 7220  & M,2,2,128: GOSUB 10000
+ 7300  FOR X = 1 TO 5
+ 7340  & M,X * 11 + 5,5,X
+ 7345  FOR QQ = 1 TO 2500: NEXT QQ
+ 7350  NEXT X
+ 7360  GOSUB 10000
+ 7400  & P,128: & T,0,14: PRINT "Popping is simple even if it doesn't yield the royal straight flush.";
+ 7450  GOSUB 10000
+ 7990  & C,128
+ 7997  FOR X = 5 TO 1 STEP  - 1: FOR QQ = 1 TO 1000: NEXT QQ: & C,X: NEXT X
+ 7999  RETURN 
+ 8000  REM  OPEN/CLOSE
+ 8010  & O,5,5,44,10,1
+ 8015  VTAB 6: POKE 1403,0: INVERSE : PRINT "No. 1";: NORMAL 
+ 8020  HOME : PRINT "Windows of any size may be opened at will.";
+ 8030  PRINT "Up to eight may be open at once.";
+ 8040  GOSUB 10000
+ 8050  & O,1,1,78,21,2: HOME : PRINT "Big..."
+ 8055  VTAB 2: POKE 1403,0: INVERSE : PRINT "No. 2";: NORMAL 
+ 8060  GOSUB 8500
+ 8070  & O,47,10,11,3,3: HOME : PRINT "Small...";
+ 8075  VTAB 11: POKE 1403,0: INVERSE : PRINT "No. 3";: NORMAL : GOSUB 8500
+ 8080  & O,4,16,30,7,4: HOME : PRINT "And";
+ 8085  VTAB 17: POKE 1403,0: INVERSE : PRINT "No. 4";: NORMAL : GOSUB 8500
+ 8090  & O,65,3,15,18,5: HOME : PRINT "any";
+ 8095  VTAB 4: POKE 1403,0: INVERSE : PRINT "No. 5";: NORMAL : GOSUB 8500
+ 8100  & O,30,15,40,7,6: HOME : PRINT "size";
+ 8105  VTAB 16: POKE 1403,0: INVERSE : PRINT "No. 6";: NORMAL : GOSUB 8500
+ 8110  & O,20,2,46,8,7: HOME : PRINT "at all.";
+ 8115  VTAB 3: POKE 1403,0: INVERSE : PRINT "No. 7";: NORMAL : GOSUB 10000
+ 8200  & P,1: & T,0,3: PRINT "And you can close in any order at all...": GOSUB 10000
+ 8210  FOR X = 2 TO 7:W(X) = 0: NEXT 
+ 8220  FOR X = 2 TO 7
+ 8230 T =  INT ( RND (1) * 6) + 2: IF W(T) <  > 0 THEN 8230
+ 8240 W(T) = X: NEXT X
+ 8245  & P,1: & T,0,4
+ 8250  PRINT "How about:";: FOR X = 2 TO 7: PRINT W(X);" ";: NEXT X
+ 8260  GOSUB 10000
+ 8270  FOR X = 2 TO 7: & C,W(X): GOSUB 8500: NEXT X
+ 8300  & P,1: & T,0,6: PRINT "Now wasn't that easy?";: GOSUB 10000: & C,1
+ 8499  GOTO 8999
+ 8500  FOR QQ = 1 TO 1500: NEXT QQ: RETURN 
+ 8999  RETURN 
+ 9000  REM  SAMPLE
+ 9010  & O,1,2,28,17,1
+ 9015  HOME : PRINT "You are no doubt used to  the waiting box by now so here is ";
+ 9016  PRINT "how it works..."
+ 9020  GOSUB 10000
+ 9050  & O,30,2,49,19,2: INVERSE : POKE 1403,0: VTAB 3: PRINT "Sample code...";: NORMAL 
+ 9055  HOME : PRINT "LIST 10000,": LIST 10000,
+ 9060  & P,1: & T,0,4
+ 9070  PRINT "The code uses &O to open awindow.  It then sets a   title line by ";
+ 9080  PRINT "printing on the window's border using HTAB and VTAB.  ";
+ 9090  PRINT "It then   scrolls the message M$ in the box until RETURN is   pressed.  ";
+ 9100  PRINT "It closes the   window &C,8 and returns.  Simple."
+ 9200  GOSUB 10000
+ 9300  & O,20,9,41,7,3: HOME : PRINT "Now you have an idea of how very simpleit is to add the power of windows in   your very own program."
+ 9310  GOSUB 10000
+ 9890  & C,3
+ 9900  & C,1: & C,2
+ 9999  RETURN 
+ 10000  REM  OPEN WINDOW #8 AND WAIT FOR (RET)
+ 10010  & O,25,20,30,3,8
+ 10020  INVERSE : VTAB 21: POKE 1403,0: PRINT "Waiting window...": NORMAL 
+ 10030 M$ = "Press RETURN to continue... Press RETURN to continue...   "
+ 10035 QQ = 1
+ 10040  & T,0,0: PRINT  MID$ (M$,QQ,27);
+ 10041 QQ = QQ + 1: IF QQ = 28 THEN QQ = 1
+ 10042  FOR QZ = 1 TO 20: NEXT QZ
+ 10048  IF  PEEK (49152) <  > 141 THEN 10040
+ 10050  POKE 49152 + 16,0
+ 10060  & C,8
+ 10070  RETURN 

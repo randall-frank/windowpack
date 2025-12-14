@@ -1,0 +1,25 @@
+ 10 PRINT CHR$(4);"PR#3"
+ 20 PRINT " " : GOSUB 3000
+ 30 HOME : PRINT "Window Pack v";VN$
+ 35 PRINT "Copyright (C) 1986 Compute! Publications";
+ 36 PRINT "Written by: Randy Frank"
+ 40 PRINT "Requires extended 80 column card": PRINT "and 65C02 microprocessor."
+ 50  VTAB 12: POKE 1403,20: PRINT "Booting the Window Pack..."
+ 60  PRINT CHR$(4);"BRUN DISCONNECT.RAM"
+ 70  PRINT CHR$(4);"BRUN WPACK"
+ 80  PRINT CHR$(4);"BRUN AMPER.PRODOS,A$4000"
+ 90  & I
+ 100  & O,3,3,60,15,1
+ 110  VTAB 4: POKE 1403,0: INVERSE : PRINT "Window #1";: NORMAL : & T,0,0
+ 120  & T,0,7: PRINT "Going to the demo program..."
+ 130  PRINT  CHR$ (4);"RUN DEMO"
+ 140  END
+ 1000 REM load a menu
+ 1010 PRINT CHR$(4);"BLOAD P8,A$6000"
+ 1020 & L,6 * 4096
+ 1030 RETURN
+ 3000 PRINT CHR$(4);"OPEN VERSION"
+ 3010 PRINT CHR$(4);"READ VERSION"
+ 3020 INPUT VN$
+ 3030 PRINT CHR$(4);"CLOSE VERSION"
+ 3040 RETURN

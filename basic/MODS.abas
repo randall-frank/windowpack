@@ -1,0 +1,76 @@
+ 10  LOMEM: 3 * 4096
+ 100  GOTO 5000: REM  START OF MAIN
+ 200  REM 
+ 1000  REM     STRING INPUT ROUTINE:  A$=STRING:YOU MUST PASS L9   THE LENGTH OF THE STRING BEING INPUTED    
+ 1010 A9$ = ""
+ 1020  GET A$: IF A$ =  CHR$ (13) THEN A$ = A9$:B9 =  FRE (0): RETURN 
+ 1025  IF A$ =  CHR$ (21) THEN 1020
+ 1030  IF A$ =  CHR$ (8) AND  LEN (A9$) > 1 THEN  PRINT A$;" ";A$;:A9$ =  LEFT$ (A9$, LEN (A9$) - 1 * (( LEN (A9$) > 1))): GOTO 1020
+ 1040  IF  LEN (A9$) = L9 THEN  PRINT  CHR$ (7);: GOTO 1020
+ 1043  IF A$ =  CHR$ (8) AND  LEN (A9$) = 1 THEN  PRINT A$;" ";A$;:A9$ = "": GOTO 1020
+ 1045  IF A$ =  CHR$ (8) THEN A9$ = "": PRINT  CHR$ (7);: GOTO 1020
+ 1050 A9$ = A9$ + A$: PRINT A$;: GOTO 1020
+ 5000  REM  MAIN PROGRAM STARTS HERE
+ 5100  DIM F$(10),S$(20)
+ 5110  & I: & O,20,7,37,7,1
+ 5120  & T,5,2: PRINT "Initializing user space.";
+ 5130 ADDR = 2 * 4096: REM  ADDRESS OF DEFINITION ($2000)
+ 5140  FOR I = ADDR TO ADDR + 8 * 256: POKE I,0: NEXT 
+ 5150  & C,1
+ 5160  & O,10,4,60,15,1
+ 5170  HOME : & T,5,3: PRINT "How many functions would you like  (1-8)? ";:L9 = 1: GOSUB 1000
+ 5180  IF A$ < "1" OR A$ > "8" THEN 5170
+ 5190 F =  ASC (A$) - 48
+ 5200  FOR I = 1 TO F
+ 5210  & C,1: & O,5,5,48,10,1
+ 5220  HOME : & T,0,1
+ 5225  PRINT "Function names are limited to 8 characters": PRINT "in length.": PRINT 
+ 5230  PRINT "Please enter the name of function #";I
+ 5240  PRINT : PRINT "1) ";:L9 = 8: GOSUB 1000:F$(I) = A$
+ 5245  FOR II =  LEN (F$(I)) + 1 TO 8:F$(I) = F$(I) + " ": NEXT II
+ 5250  HOME : & T,0,1: PRINT "When entering subfunctions a 'DIVIDER' is": PRINT "counts as a subfunction.  To get a DIVIDER": PRINT "in you subfunction list, enter 'DIVIDER'": PRINT "as the name of the subfunction.": PRINT 
+ 5260  PRINT "How many subfunctions does "F$(I): PRINT "have  (1-15)? ";:L9 = 2: GOSUB 1000
+ 5270 S =  VAL (A$): IF S < 1 OR S > 15 THEN 5250
+ 5280  & C,1
+ 5300  & O,3,7,40,9,1
+ 5310  HOME : PRINT 
+ 5320  PRINT "Please enter the names of "F$(I)"'s"
+ 5330  PRINT "subfunctions in the window on the": PRINT "right.  Enter 'DIVIDER' for a divider."
+ 5340  & O,55,9 -  INT (S / 2),22,S + 4,2
+ 5350  HOME : FOR J = 1 TO S: & T,0,J: IF J < 10 THEN  PRINT " ";J;") ";
+ 5360  IF J > 9 THEN  PRINT J;") ";
+ 5370  NEXT J
+ 5500  FOR J = 1 TO S: & T,4,J:L9 = 15: GOSUB 1000:S$(J) = A$: NEXT J
+ 5600  REM  poke in the values for F$(i)
+ 5605  & O,25,8,25,5,3
+ 5610  & T,1,1: INVERSE : PRINT "ONE MOMENT, PLEASE.";: NORMAL 
+ 5615  FOR J = 1 TO S
+ 5620  IF S$(J) = "DIVIDER" OR S$(J) = "divider" OR S$(J) = "Divider" THEN S$(J) = "": FOR K = 1 TO 15:S$(J) = S$(J) +  CHR$ (0): NEXT K
+ 5630  FOR K =  LEN (S$(J)) + 1 TO 15:S$(J) = S$(J) + " ": NEXT K
+ 5640 S$(J) = S$(J) +  CHR$ (90)
+ 5650  NEXT J
+ 5700  FOR II = 1 TO 8: POKE ADDR + (I - 1) * 256 + II - 1, ASC ( MID$ (F$(I),II,1)) + 128
+ 5710 Z$ =  MID$ (F$(I),II,1): IF Z$ >  = "@" AND Z$ <  = "_" THEN  POKE ADDR + (I - 1) * 256 + II - 1, PEEK (ADDR + (I - 1) * 256 + II - 1) - 64
+ 5720  NEXT II
+ 5800  FOR K = 1 TO S
+ 5810 P = 128: IF  LEFT$ (S$(K),1) =  CHR$ (0) THEN P = 0:S$(K) = "SSSSSSSSSSSSSSS" +  CHR$ (90)
+ 5820  FOR L = 1 TO 15
+ 5830 Z$ =  MID$ (S$(K),L,1): IF Z$ = "S" AND P = 0 THEN 5850
+ 5840  IF Z$ >  = "@" AND Z$ <  = "_" THEN Z$ =  CHR$ ( ASC (Z$) - 64)
+ 5850  POKE ADDR + (I - 1) * 256 + K * 16 + L - 1, ASC (Z$) + P
+ 5860  NEXT L
+ 5870  POKE ADDR + (I - 1) * 256 + K * 16 + 15,90
+ 5880  NEXT K
+ 5890  & C,3: FOR K = 1 TO 500: NEXT K: & I
+ 5900  NEXT I
+ 5920  & O,20,5,40,8,1: HOME : PRINT : PRINT "  You may try out your function": PRINT "bar definitions.  Use the arrow keys": PRINT "to movethe window. Press RETURN": PRINT "when you are finished.";
+ 5930  & L,ADDR: & E
+ 5940  & C,1
+ 6000  REM  save data
+ 6100  & O,20,5,40,10,1
+ 6110  & T,0,3: PRINT "Would you like to save your function": PRINT "definitions (Y/N)? ";:L9 = 1: GOSUB 1000
+ 6120  IF A$ = "n" OR A$ = "N" THEN  & I: & O,1,1,78,22,1: & L,ADDR: END 
+ 6130  HOME : PRINT : PRINT "Please enter the filename for your": PRINT "function bar definition? ";:L9 = 15: GOSUB 1000
+ 6139  PRINT " "
+ 6140  PRINT  CHR$ (4);"BSAVE ";A$;",A"ADDR",L$800"
+ 6200  & I: & O,1,1,78,22,1: & L,ADDR: END 
